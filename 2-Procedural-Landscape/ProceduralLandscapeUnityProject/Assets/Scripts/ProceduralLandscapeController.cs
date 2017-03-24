@@ -6,16 +6,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using System.Linq;	//required for conversion of Lists to Arrays
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
 public class ProceduralLandscapeController : MonoBehaviour {
-	/*This class creates a procedural landscape formation. It uses the perlin noise
-	technique to do that.
-	This class creates a 3d-landscape formation by using three combined layer of perlin noise functions.
-	Uses */
+	/* This class creates a procedural landscape formation. 
+	It uses the perlin noise function to create the height map of the landscape.
+	There are three levels of detail which are summed up to construct the final landscape's form
+	- Layer1: coarse detail
+	- Layer2: medium detail
+	- Layer3: fine detail 
+
+	You can use the sliders to control the landscape's form in real - time, in Unity Editor's edit-mode
+	There is also another option, to enable the "animate" choice, which produces*/
 	//main variables
 	float myTime;					// time
 	float myTimeScale;				// timescale: scales the flow of time
@@ -28,35 +33,47 @@ public class ProceduralLandscapeController : MonoBehaviour {
 
 	public bool animate;
 	// update form variables
+
+	/* The variables that follow are public. They are exposed to the editor accompanied by sliders
+	that work within a specific range, for easy modification of the Landscape-mesh while
+	in edit mode. They also work while in Play Mode, but the changes that you make in Play Mode 
+	will be lost once you spress the Stop button. */
 	[Header ("updateable variables")]
 
 	[Space(8)]
-	// control of layer 1
-	[Range(700.0f,2000.0f)]
-	public float layer1Scale = 200.0f;
-	float layer1ScalePreviousValue = 0;
-	[Range(1.0f,500.0f)]
-	public float layer1Height = 250.0f;
-	float layer1HeightPreviousValue = 0;
-	[Range(1000.0f,1010.0f)]
-	public float layer1OffsetX = 1000.0f;
-	float layer1OffsetXPreviousValue;
-	[Range(1000.0f,1010.0f)]
-	public float layer1OffsetZ = 1000.0f;
+
+	// control variables for Layer1
+	[Range(700.0f,2500.0f)]					// layer1Scale - value slider ranges from 700 to 2500
+	public float layer1Scale = 700.0f;		// the scale of Layer 1
+	float layer1ScalePreviousValue = 0;		// stores the layer1Scale's previous value, for change - detection
+
+	[Range(1.0f,700.0f)]					// layer1Height - value slider ranges from 1 to 700
+	public float layer1Height = 1.0f;		// the height of Layer 1
+	float layer1HeightPreviousValue = 0;	// stores the layer1Height's previous value, for change - detection
+
+	[Range(1000.0f,1010.0f)]				// layer1OffsetX - value slider ranges from 1000 to 1010
+	public float layer1OffsetX = 1000.0f;	// The offset of Layer 1 along the X-axis
+	float layer1OffsetXPreviousValue;		// stores the layer1OffsetX's previous value, for change - detection
+
+	[Range(1000.0f,1010.0f)]				// layer1OffsetZ - value slider ranges from 1000 to 1010
+	public float layer1OffsetZ = 1000.0f;	// The offset of Layer 1 along the Z-axis
 	float layer1OffsetZPreviousValue;
 
 	[Space(8)]
 	// control of layer 2
-	[Range(200.0f,500.0f)]
-	public float layer2Scale = 50.0f;
+	[Range(200.0f,500.0f)]					// layer2Scale - value slider ranges from 200 to 500
+	public float layer2Scale = 50.0f;		// the scale of Layer 2
 	float layer2ScalePreviousValue = 0;
-	[Range(1.0f,250.0f)]
+
+	[Range(1.0f,350.0f)]
 	public float layer2Height = 20.0f;
 	float layer2HeightPreviousValue = 0;
-	[Range(1000.0f,1010.0f)]
+
+	[Range(1000.0f,1100.0f)]
 	public float layer2OffsetX = 1000.0f;
 	float layer2OffsetXPreviousValue;
-	[Range(1000.0f,1010.0f)]
+
+	[Range(1000.0f,1100.0f)]
 	public float layer2OffsetZ = 1000.0f;
 	float layer2OffsetZPreviousValue;
 
@@ -68,10 +85,10 @@ public class ProceduralLandscapeController : MonoBehaviour {
 	[Range(1.0f,100.0f)]
 	public float layer3Height = 1.0f;
 	float layer3HeightPreviousValue = 0;
-	[Range(1000.0f,1010.0f)]
+	[Range(1000.0f,1300.0f)]
 	public float layer3OffsetX = 1000.0f;
 	float layer3OffsetXPreviousValue;
-	[Range(1000.0f,1010.0f)]
+	[Range(1000.0f,1300.0f)]
 	public float layer3OffsetZ = 1000.0f;
 	float layer3OffsetZPreviousValue;
 
@@ -91,7 +108,7 @@ public class ProceduralLandscapeController : MonoBehaviour {
 
 	Mesh myMesh;										// the mesh (is created in this script)
 	Material landScapeMaterial;							// the material that will be applied on the mesh (is created in this script)
-	Texture2D landscapeMaterialTexture;					// the matrial's texture (is created in this script)
+	Texture2D landscapeMaterialTexture;					// the material's texture (is created in this script)
 	//mesh creation lists
 	List<Vector3> verticeList = new List<Vector3>();	//list of vertices
 	List<Vector2> uvList = new List<Vector2>();			//list of uvs
@@ -121,18 +138,14 @@ public class ProceduralLandscapeController : MonoBehaviour {
 			/*if the "animate" variable is set to true, then the variables that produce the landscape are animated.
 			otherwise they are steady and can be changed by the user, using the sliders.*/
 			myTime += Time.deltaTime * myTimeScale;
-			layer1Scale = map (Mathf.Sin (myTime), -1.0f, 1.0f, 300.0f, 500.0f);
-			layer1Height = map (Mathf.Sin (myTime * 1.1f), -1.0f, 1.0f, 100.0f, 500.0f);
+			layer1Scale = map (Mathf.Sin (myTime), -1.0f, 1.0f, 700.0f, 2500.0f);
+			layer1Height = map (Mathf.Sin (myTime * 1.1f), -1.0f, 1.0f, 1.0f, 700.0f);
+			layer1OffsetX = map (Mathf.Sin (myTime * 0.3f), -1.0f, 1.0f, 1000.0f, 1010.0f);
+			layer1OffsetZ = map (Mathf.Cos (myTime * 0.4f), -1.0f, 1.0f, 1000.0f, 1010.0f);
 			layer2Scale = map (Mathf.Sin (myTime * 1.2f), -1.0f, 1.0f, 100.0f, 150.0f);
 			layer2Height = map (Mathf.Sin (myTime * 1.3f), -1.0f, 1.0f, 50.0f, 150.0f);
 			layer3Scale = map (Mathf.Sin (myTime * 1.4f), -1.0f, 1.0f, 10.0f, 40.0f);
-			layer3Height = map (Mathf.Sin (myTime * 1.5f), -1.0f, 1.0f, 10.0f, 40.0f);
-			/*bottomColor.r += Random.Range (-0.05f, 0.05f);
-			bottomColor.g += Random.Range (-0.05f, 0.05f);
-			bottomColor.b += Random.Range (-0.05f, 0.05f);
-			peakColor.r += Random.Range (-0.05f, 0.05f);
-			peakColor.g += Random.Range (-0.05f, 0.05f);
-			peakColor.b += Random.Range (-0.05f, 0.05f);*/
+			layer3Height = map (Mathf.Sin (myTime * 1.5f), -1.0f, 1.0f, 10.0f, 40.0f);		
 		}
 		if (UpdateVariableValueChange ()) {
 			UpdateLandscapeGeometry ();
