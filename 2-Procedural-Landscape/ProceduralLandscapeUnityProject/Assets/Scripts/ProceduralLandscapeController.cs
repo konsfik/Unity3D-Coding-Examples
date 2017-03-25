@@ -14,10 +14,14 @@ using System.Linq;	//required for conversion of Lists to Arrays
 public class ProceduralLandscapeController : MonoBehaviour {
 	/* This class creates a procedural landscape formation. 
 	It uses the perlin noise function to create the height map of the landscape.
+	( Perlin Function Reference: "https://docs.unity3d.com/ScriptReference/Mathf.PerlinNoise.html" )
 	There are three levels of detail which are summed up to construct the final landscape's form
 	- Layer1: coarse detail
 	- Layer2: medium detail
 	- Layer3: fine detail 
+	The summing of those layers happens in the LandscapePoint(int i, int j) function, which returns
+	a Vector3 (a 3D point) which is the position of e vertex. This function is used by the [...] function
+	which takes these values and constructs the mesh.
 
 	You can use the sliders to control the landscape's form in real - time, in Unity Editor's edit-mode
 	There is also another option, to enable the "animate" choice, which produces*/
@@ -40,67 +44,76 @@ public class ProceduralLandscapeController : MonoBehaviour {
 	will be lost once you spress the Stop button. */
 	[Header ("updateable variables")]
 
-	[Space(8)]
+	[Space(8)]		// leave a gap of 8 pixels between the header and the parameters in editor
 
 	// control variables for Layer1
 	[Range(700.0f,2500.0f)]					// layer1Scale - value slider ranges from 700 to 2500
-	public float layer1Scale = 700.0f;		// the scale of Layer 1
+	public float layer1Scale = 700.0f;		// the current scale of Layer 1
 	float layer1ScalePreviousValue = 0;		// stores the layer1Scale's previous value, for change - detection
 
-	[Range(1.0f,700.0f)]					// layer1Height - value slider ranges from 1 to 700
-	public float layer1Height = 1.0f;		// the height of Layer 1
+	[Range(1.0f,1000.0f)]					// layer1Height - value slider ranges from 1 to 1000
+	public float layer1Height = 1.0f;		// the current height of Layer 1
 	float layer1HeightPreviousValue = 0;	// stores the layer1Height's previous value, for change - detection
 
 	[Range(1000.0f,1010.0f)]				// layer1OffsetX - value slider ranges from 1000 to 1010
-	public float layer1OffsetX = 1000.0f;	// The offset of Layer 1 along the X-axis
-	float layer1OffsetXPreviousValue;		// stores the layer1OffsetX's previous value, for change - detection
+	public float layer1OffsetX = 1000.0f;	// The current offset of Layer 1 along the X-axis
+	float layer1OffsetXPreviousValue = 0;	// stores the layer1OffsetX's previous value, for change - detection
 
 	[Range(1000.0f,1010.0f)]				// layer1OffsetZ - value slider ranges from 1000 to 1010
-	public float layer1OffsetZ = 1000.0f;	// The offset of Layer 1 along the Z-axis
-	float layer1OffsetZPreviousValue;
+	public float layer1OffsetZ = 1000.0f;	// The current offset of Layer 1 along the Z-axis
+	float layer1OffsetZPreviousValue = 0;	// stores the layer1OffsetZ's previous value, for change - detection
 
-	[Space(8)]
-	// control of layer 2
+	[Space(8)]		// leave a gap of 8 pixels between the parameters in editor
+
+	// control variables for Layer2
 	[Range(200.0f,500.0f)]					// layer2Scale - value slider ranges from 200 to 500
-	public float layer2Scale = 50.0f;		// the scale of Layer 2
-	float layer2ScalePreviousValue = 0;
+	public float layer2Scale = 200.0f;		// the current scale of Layer 2
+	float layer2ScalePreviousValue = 0;		// stores the layer2Scale's previous value, for change - detection
 
-	[Range(1.0f,350.0f)]
-	public float layer2Height = 20.0f;
-	float layer2HeightPreviousValue = 0;
+	[Range(1.0f,500.0f)]					// layer2Height - value slider ranges from 1 to 500
+	public float layer2Height = 1.0f;		// the current height of Layer 2
+	float layer2HeightPreviousValue = 0;	// stores the layer2Height's previous value, for change - detection
+
+	[Range(1000.0f,1050.0f)]				// layer2OffsetX - value slider ranges from 1000 to 1050
+	public float layer2OffsetX = 1000.0f;	// The current offset of Layer 2 along the X-axis
+	float layer2OffsetXPreviousValue = 0;	// stores the layer2OffsetX's previous value, for change - detection
+
+	[Range(1000.0f,1050.0f)]				// layer2OffsetZ - value slider ranges from 1000 to 1050
+	public float layer2OffsetZ = 1000.0f;	// The current offset of Layer 2 along the Z-axis
+	float layer2OffsetZPreviousValue = 0;	// stores the layer2OffsetZ's previous value, for change - detection
+
+	[Space(8)]		// leave a gap of 8 pixels between the parameters in editor
+
+	// control variables for Layer3
+	[Range(20.0f,100.0f)]					// layer3Scale - value slider ranges from 20 to 100
+	public float layer3Scale = 20.0f;		// the current scale of Layer 3
+	float layer3ScalePreviousValue = 0;		// stores the layer3Scale's previous value, for change - detection
+
+	[Range(1.0f,100.0f)]					// layer3Height - value slider ranges from 1 to 100
+	public float layer3Height = 1.0f;		// the current height of Layer 3
+	float layer3HeightPreviousValue = 0;	// stores the layer3Height's previous value, for change - detection
 
 	[Range(1000.0f,1100.0f)]
-	public float layer2OffsetX = 1000.0f;
-	float layer2OffsetXPreviousValue;
-
-	[Range(1000.0f,1100.0f)]
-	public float layer2OffsetZ = 1000.0f;
-	float layer2OffsetZPreviousValue;
-
-	[Space(8)]
-	// control of layer 3
-	[Range(10.0f,100.0f)]
-	public float layer3Scale = 8.0f;
-	float layer3ScalePreviousValue = 0;
-	[Range(1.0f,100.0f)]
-	public float layer3Height = 1.0f;
-	float layer3HeightPreviousValue = 0;
-	[Range(1000.0f,1300.0f)]
 	public float layer3OffsetX = 1000.0f;
-	float layer3OffsetXPreviousValue;
-	[Range(1000.0f,1300.0f)]
-	public float layer3OffsetZ = 1000.0f;
-	float layer3OffsetZPreviousValue;
+	float layer3OffsetXPreviousValue = 0;
 
-	[Space(8)]
-	//texture
-	public Color peakColor;
-	Color peakColorPreviousValue;
-	public Color bottomColor;
-	Color bottomColorPreviousValue;
-	[Range(0.0f,1.0f)]
+	[Range(1000.0f,1100.0f)]
+	public float layer3OffsetZ = 1000.0f;
+	float layer3OffsetZPreviousValue = 0;
+
+	[Space(8)]		// leave a gap of 8 pixels between the parameters in editor
+
+	// material - specific parameters
+	public Color peakColor;					// the color that will be applied at the peak of the hills
+	Color peakColorPreviousValue;			//the previous value of peakColor, for change - detection
+
+	public Color bottomColor;				// the color that will be used at the bottom of the hills
+	Color bottomColorPreviousValue;			// the previous value of bottomColor, for change - detection
+
+	[Range(0.0f,1.0f)]						
 	public float materialSmoothness;
 	float materialSmoothnessPreviousValue;
+
 	[Range(0.0f,1.0f)]
 	public float materialMetallicness;
 	float materialMetallicnessPreviousValue;
@@ -117,8 +130,8 @@ public class ProceduralLandscapeController : MonoBehaviour {
 	void Awake () {
 		//animate = true;
 		//initialize main variables
-		landscapeWidthSegments = 200;		// the 
-		landscapeLengthSegments = 200;
+		landscapeWidthSegments = 255;		// the 
+		landscapeLengthSegments = 255;
 		landscapeWidth = 4000;
 		landscapeLength = 4000;
 
@@ -294,27 +307,26 @@ public class ProceduralLandscapeController : MonoBehaviour {
 		If ANY of them has been changed, then it returns TRUE. Otherwise it returns false.
 		This Function is used within the Update
 		How this is used: There are some things that must happen ONLY when one of these variables has changed.
-		So with this function it is possible to check for value chabges.*/
-		if(
-			//check whether anything has changed...
-			(layer1OffsetXPreviousValue != layer1OffsetX)		// 
-			||(layer1OffsetZPreviousValue != layer1OffsetZ)		
-			||(layer2OffsetXPreviousValue != layer2OffsetX)		
-			||(layer2OffsetZPreviousValue != layer2OffsetZ)		
-			||(layer3OffsetXPreviousValue != layer3OffsetX)		
-			||(layer3OffsetZPreviousValue != layer3OffsetZ)		
-			||(layer1ScalePreviousValue != layer1Scale)			// or layer1Scale has changed
-			||(layer2ScalePreviousValue != layer2Scale)			// or layer2Scale has changed
-			||(layer3ScalePreviousValue != layer3Scale)			// or layer3Scale has changed
-			||(layer1HeightPreviousValue != layer1Height)		// or layer1Height has changed
-			||(layer2HeightPreviousValue != layer2Height)		// or layer2Height has changed
-			||(layer3HeightPreviousValue != layer3Height)		// or layer3Height has changed
-			||(materialSmoothnessPreviousValue != materialSmoothness)
-			||(materialMetallicnessPreviousValue != materialMetallicness)
-			||(peakColorPreviousValue != peakColor)			
-			||(bottomColorPreviousValue != bottomColor)
+		So with this function it is possible to check for value changes.*/
+		if(	//check whether anything has changed...
+			(layer1OffsetXPreviousValue != layer1OffsetX)					// if layer1OffestX has changed
+			||(layer1OffsetZPreviousValue != layer1OffsetZ)					// or layer1OffsetZ has changed
+			||(layer2OffsetXPreviousValue != layer2OffsetX)					// or layer2OffestX has changed
+			||(layer2OffsetZPreviousValue != layer2OffsetZ)					// or layer2OffsetZ has changed
+			||(layer3OffsetXPreviousValue != layer3OffsetX)					// or layer3OffestX has changed
+			||(layer3OffsetZPreviousValue != layer3OffsetZ)					// or layer3OffsetZ has changed
+			||(layer1ScalePreviousValue != layer1Scale)						// or layer1Scale has changed
+			||(layer2ScalePreviousValue != layer2Scale)						// or layer2Scale has changed
+			||(layer3ScalePreviousValue != layer3Scale)						// or layer3Scale has changed
+			||(layer1HeightPreviousValue != layer1Height)					// or layer1Height has changed
+			||(layer2HeightPreviousValue != layer2Height)					// or layer2Height has changed
+			||(layer3HeightPreviousValue != layer3Height)					// or layer3Height has changed
+			||(materialSmoothnessPreviousValue != materialSmoothness)		// or materialSmoothness has changed
+			||(materialMetallicnessPreviousValue != materialMetallicness)	// or materialMetallicness has changed
+			||(peakColorPreviousValue != peakColor)							// or peakColor has changed
+			||(bottomColorPreviousValue != bottomColor)						// or bottomColor has changed
 		){
-			//if anything has changed, then set previous values to current values
+			// then set previous values to current values for all of the change-able variables
 			layer1OffsetXPreviousValue = layer1OffsetX;
 			layer1OffsetZPreviousValue = layer1OffsetZ;
 			layer2OffsetXPreviousValue = layer2OffsetX;
