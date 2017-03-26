@@ -1,60 +1,6 @@
 Base path: C:/Program Files/Unity/Editor/Data
 Cmd: getPlatforms
-Cmd: disassembleShader
-  api=10 insize=1268 outsize=2081 ok=1
-Cmd: disassembleShader
-  api=12 insize=3688 outsize=6840 ok=1
-Cmd: disassembleShader
-  api=15 insize=1718 outsize=3056 ok=1
-Cmd: disassembleShader
-  api=15 insize=1554 outsize=2860 ok=1
-Cmd: disassembleShader
-  api=15 insize=1922 outsize=3391 ok=1
-Cmd: disassembleShader
-  api=12 insize=1696 outsize=3012 ok=1
-Cmd: disassembleShader
-  api=12 insize=2160 outsize=3744 ok=1
-Cmd: disassembleShader
-  api=12 insize=2264 outsize=3933 ok=1
-Cmd: disassembleShader
-  api=10 insize=1016 outsize=1718 ok=1
-Cmd: disassembleShader
-  api=17 insize=350 outsize=907 ok=1
-Cmd: disassembleShader
-  api=10 insize=1468 outsize=2513 ok=1
 Cmd: compileSnippet
-  api=1 type=0 insize=1152 outsize=1468 kw=DIRLIGHTMAP_SEPARATE _EMISSION pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1
-Cmd: disassembleShader
-  api=10 insize=1468 outsize=2513 ok=1
+  api=8 type=0 insize=632 outsize=1610 kw=_EMISSION pd=UNITY_NO_SCREENSPACE_SHADOWS UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_MOBILE SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=1152 outsize=2570 kw=DIRLIGHTMAP_COMBINED _EMISSION pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1
-Cmd: disassembleShader
-  api=17 insize=2570 outsize=4620 ok=1
-Cmd: compileSnippet
-  api=4 type=1 insize=1152 outsize=2546 kw=DIRLIGHTMAP_SEPARATE _EMISSION UNITY_HDR_ON pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1
-Cmd: disassembleShader
-  api=17 insize=2546 outsize=4593 ok=1
-Cmd: disassembleShader
-  api=13 insize=4298 outsize=8037 ok=1
-Cmd: compileSnippet
-  api=1 type=0 insize=1098 outsize=2188 kw=DIRECTIONAL _EMISSION VERTEXLIGHT_ON pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1
-Cmd: disassembleShader
-  api=9 insize=2188 outsize=3523 ok=1
-Cmd: compileSnippet
-  api=8 type=1 insize=1098 outsize=3270 kw=DIRECTIONAL _EMISSION pd=UNITY_NO_SCREENSPACE_SHADOWS UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_MOBILE SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1
-Cmd: disassembleShader
-  api=14 insize=3270 outsize=6820 ok=1
-Cmd: disassembleShader
-  api=9 insize=1048 outsize=1679 ok=1
-Cmd: disassembleShader
-  api=13 insize=2754 outsize=5565 ok=1
-Cmd: disassembleShader
-  api=15 insize=2074 outsize=3569 ok=1
-Cmd: disassembleShader
-  api=15 insize=1942 outsize=3363 ok=1
-Cmd: disassembleShader
-  api=17 insize=1670 outsize=3046 ok=1
-Cmd: disassembleShader
-  api=17 insize=1398 outsize=2650 ok=1
-Cmd: disassembleShader
-  api=11 insize=1340 outsize=2169 ok=1
+  api=4 type=1 insize=632 outsize=1462 kw=_EMISSION pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA ok=1

@@ -25,13 +25,8 @@ public class ProceduralLandscapeController : MonoBehaviour {
 
 	You can use the sliders to control the landscape's form in real - time, in Unity Editor's edit-mode
 	There is also another option, to enable the "animate" choice, which produces*/
-	//main variables
-	float myTime;					// time
-	float myTimeScale;				// timescale: scales the flow of time
-	int landscapeWidthSegments;		// number of segments along the X axis
-	int landscapeLengthSegments;	// number of segments along the Z axis
-	float landscapeWidth;			// landscape width: actual size along the X axis
-	float landscapeLength;			// landscape length: actual size along the Z axis
+
+
 	//landscape formation variables
 	//float seed;
 
@@ -93,39 +88,48 @@ public class ProceduralLandscapeController : MonoBehaviour {
 	public float layer3Height = 1.0f;		// the current height of Layer 3
 	float layer3HeightPreviousValue = 0;	// stores the layer3Height's previous value, for change - detection
 
-	[Range(1000.0f,1100.0f)]
-	public float layer3OffsetX = 1000.0f;
-	float layer3OffsetXPreviousValue = 0;
+	[Range(1000.0f,1100.0f)]				// layer3OffsetX - value slider ranges from 1000 to 1100
+	public float layer3OffsetX = 1000.0f;	// The current offset of Layer 3 along the X-axis
+	float layer3OffsetXPreviousValue = 0;	// stores the layer3OffsetX's previous value, for change - detection
 
-	[Range(1000.0f,1100.0f)]
-	public float layer3OffsetZ = 1000.0f;
-	float layer3OffsetZPreviousValue = 0;
+	[Range(1000.0f,1100.0f)]				// layer3OffsetZ - value slider ranges from 1000 to 1100
+	public float layer3OffsetZ = 1000.0f;	// The current offset of Layer 3 along the Z-axis
+	float layer3OffsetZPreviousValue = 0;	// stores the layer3OffsetZ's previous value, for change - detection
 
 	[Space(8)]		// leave a gap of 8 pixels between the parameters in editor
 
 	// material - specific parameters
-	public Color peakColor;					// the color that will be applied at the peak of the hills
-	Color peakColorPreviousValue;			//the previous value of peakColor, for change - detection
+	public Color peakColor;						// the color that will be applied at the peak of the hills
+	Color peakColorPreviousValue;				//the previous value of peakColor, for change - detection
 
-	public Color bottomColor;				// the color that will be used at the bottom of the hills
-	Color bottomColorPreviousValue;			// the previous value of bottomColor, for change - detection
+	public Color bottomColor;					// the color that will be used at the bottom of the hills
+	Color bottomColorPreviousValue;				// the previous value of bottomColor, for change - detection
 
-	[Range(0.0f,1.0f)]						
-	public float materialSmoothness;
-	float materialSmoothnessPreviousValue;
+	[Range(0.0f,1.0f)]							// Material Smoothness - value slider ranges from 1000 to 1100
+	public float materialSmoothness;			// The current Material Smoothness
+	float materialSmoothnessPreviousValue;		// materialSmoothness's previous value, for change detection
 
-	[Range(0.0f,1.0f)]
-	public float materialMetallicness;
-	float materialMetallicnessPreviousValue;
+	[Range(0.0f,1.0f)]							// Material Metallicness - value slider ranges from 1000 to 1100
+	public float materialMetallicness;			// The current Material Metallicness
+	float materialMetallicnessPreviousValue;	// materialMetallicness's previous value, for change detection
 
+
+	//main variables
+	float localTime;										// time
+	float localTimeScale;									// timescale: scales the flow of time
 
 	Mesh myMesh;										// the mesh (is created in this script)
 	Material landScapeMaterial;							// the material that will be applied on the mesh (is created in this script)
 	Texture2D landscapeMaterialTexture;					// the material's texture (is created in this script)
+
+	int landscapeWidthSegments;							// number of segments along the X axis
+	int landscapeLengthSegments;						// number of segments along the Z axis
+	float landscapeWidth;								// landscape width: actual size along the X axis
+	float landscapeLength;								// landscape length: actual size along the Z axis
 	//mesh creation lists
-	List<Vector3> verticeList = new List<Vector3>();	//list of vertices
-	List<Vector2> uvList = new List<Vector2>();			//list of uvs
-	List<int> triList = new List<int>();				//list of triangles
+	List<Vector3> verticeList = new List<Vector3>();	// list of vertices
+	List<Vector2> uvList = new List<Vector2>();			// list of uvs
+	List<int> triList = new List<int>();				// list of triangles
 	// Use this for initialization
 	void Awake () {
 		//animate = true;
@@ -136,8 +140,8 @@ public class ProceduralLandscapeController : MonoBehaviour {
 		landscapeLength = 4000;
 
 		//initialize landscape formation variables
-		myTime = 0.0f;
-		myTimeScale = 0.3f;
+		localTime = Random.Range( 0.0f, 1000.0f);
+		localTimeScale = 0.3f;
 		CreateLandscapeGeometry ();	// 1. make the landscape object (geometry)
 		CreateLandscapeTexture();	// 2. make the 2d texture
 		CreateLandscapeMaterial();	// 3. create the landscape material
@@ -147,27 +151,41 @@ public class ProceduralLandscapeController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (animate == true) {
-			/*if the "animate" variable is set to true, then the variables that produce the landscape are animated.
+		if ((animate == true) && (Application.isPlaying)) {
+			/*if the "animate" variable is set to true and the Application is Playing, 
+			then the variables that produce the landscape are "animated".
 			otherwise they are steady and can be changed by the user, using the sliders.*/
-			myTime += Time.deltaTime * myTimeScale;
-			layer1Scale = map (Mathf.Sin (myTime), -1.0f, 1.0f, 700.0f, 2500.0f);
-			layer1Height = map (Mathf.Sin (myTime * 1.1f), -1.0f, 1.0f, 1.0f, 700.0f);
-			layer1OffsetX = map (Mathf.Sin (myTime * 0.3f), -1.0f, 1.0f, 1000.0f, 1010.0f);
-			layer1OffsetZ = map (Mathf.Cos (myTime * 0.4f), -1.0f, 1.0f, 1000.0f, 1010.0f);
-			layer2Scale = map (Mathf.Sin (myTime * 1.2f), -1.0f, 1.0f, 100.0f, 150.0f);
-			layer2Height = map (Mathf.Sin (myTime * 1.3f), -1.0f, 1.0f, 50.0f, 150.0f);
-			layer3Scale = map (Mathf.Sin (myTime * 1.4f), -1.0f, 1.0f, 10.0f, 40.0f);
-			layer3Height = map (Mathf.Sin (myTime * 1.5f), -1.0f, 1.0f, 10.0f, 40.0f);		
+			localTime += Time.deltaTime * localTimeScale;
+			layer1Scale = map (Mathf.Sin (localTime), -1.0f, 1.0f, 700.0f, 2500.0f);
+			layer1Height = map (Mathf.Sin (localTime * 1.1f), -1.0f, 1.0f, 1.0f, 700.0f);
+			/*layer1OffsetX = map (Mathf.Sin (localTime * 0.3f), -1.0f, 1.0f, 1000.0f, 1010.0f);
+			layer1OffsetZ = map (Mathf.Cos (localTime * 0.4f), -1.0f, 1.0f, 1000.0f, 1010.0f);*/
+			layer2Scale = map (Mathf.Sin (localTime * 1.2f), -1.0f, 1.0f, 200.0f, 500.0f);
+			layer2Height = map (Mathf.Sin (localTime * 1.3f), -1.0f, 1.0f, 10.0f, 500.0f);
+			layer3Scale = map (Mathf.Sin (localTime * 1.4f), -1.0f, 1.0f, 20.0f, 100.0f);
+			layer3Height = map (Mathf.Sin (localTime * 1.5f), -1.0f, 1.0f, 1.0f, 100.0f);	
+			materialMetallicness = map (Mathf.Sin (localTime * 2.0f), -1.0f, 1.0f, 0.0f, 1.0f);	
+			materialSmoothness = map (Mathf.Sin (localTime * 1.6f), -1.0f, 1.0f, 0.0f, 1.0f);	
+			bottomColor.r = map (Mathf.Sin (localTime * 0.5f), -1.0f, 1.0f, 0.0f, 1.0f);
+			bottomColor.g = map (Mathf.Sin (localTime * 0.6f), -1.0f, 1.0f, 0.0f, 1.0f);
+			bottomColor.b = map (Mathf.Sin (localTime * 0.7f), -1.0f, 1.0f, 0.0f, 1.0f);
+			peakColor.r = map (Mathf.Sin (localTime * 0.3f), -1.0f, 1.0f, 0.0f, 1.0f);
+			peakColor.g = map (Mathf.Sin (localTime * 0.4f), -1.0f, 1.0f, 0.0f, 1.0f);
+			peakColor.b = map (Mathf.Sin (localTime * 0.5f), -1.0f, 1.0f, 0.0f, 1.0f);
 		}
 		if (UpdateVariableValueChange ()) {
+			/* If ANY of the Updateable Variables has changed, then the Landscape Geometry will be updated.
+			This works in Edit Mode, as well as in Play Mode. */
 			UpdateLandscapeGeometry ();
+			UpdateLandscapeTexture ();
+			UpdateLandscapeMaterial();
+			GetComponent<Renderer> ().material = landScapeMaterial;
 		}
 	}
 
 	private void UpdateLandscapeGeometry(){
-		/*This function updates the mesh geometry by repositioning the mesh's existing vertices
-		and then recalculating the normals. The mesh's inner structure does not change.*/
+		/* This function updates the mesh geometry by repositioning the mesh's existing vertices
+		and then recalculating the normals. The mesh's inner structure does not change. */
 		myMesh = GetComponent<MeshFilter> ().sharedMesh;
 		int cnt = 0;
 		for (int i = 0; i < landscapeLengthSegments; i++) {
@@ -179,10 +197,6 @@ public class ProceduralLandscapeController : MonoBehaviour {
 		myMesh.vertices = verticeList.ToArray ();
 		myMesh.RecalculateNormals();
 		GetComponent<MeshFilter>().mesh = myMesh;
-
-		CreateLandscapeTexture ();
-		CreateLandscapeMaterial();
-		GetComponent<Renderer> ().material = landScapeMaterial;
 	}
 
 	private void CreateLandscapeGeometry(){
@@ -199,12 +213,12 @@ public class ProceduralLandscapeController : MonoBehaviour {
 				if (i == 0 || j == 0)
 					continue;
 				//Adds the index of the three vertices in order to make up each of the two tris
-				triList.Add(landscapeWidthSegments * i +j); //Top right
-				triList.Add(landscapeWidthSegments * i + j - 1); //Bottom right
-				triList.Add(landscapeWidthSegments * (i - 1) + j - 1); //Bottom left - First triangle
-				triList.Add(landscapeWidthSegments * (i - 1) + j - 1); //Bottom left 
-				triList.Add(landscapeWidthSegments * (i- 1) + j); //Top left
-				triList.Add(landscapeWidthSegments * i + j); //Top right - Second triangle
+				triList.Add(landscapeWidthSegments * i +j); 			//Top right
+				triList.Add(landscapeWidthSegments * i + j - 1); 		//Bottom right
+				triList.Add(landscapeWidthSegments * (i - 1) + j - 1);	//Bottom left - First triangle
+				triList.Add(landscapeWidthSegments * (i - 1) + j - 1);	//Bottom left 
+				triList.Add(landscapeWidthSegments * (i- 1) + j);		//Top left
+				triList.Add(landscapeWidthSegments * i + j);			//Top right - Second triangle
 			}
 		}
 		myMesh.vertices = verticeList.ToArray();
@@ -215,13 +229,10 @@ public class ProceduralLandscapeController : MonoBehaviour {
 		GetComponent<MeshFilter>().mesh = myMesh;
 	}
 
-	private void CreateLandscapeTexture(){
-		//creates the texture that will then be applied to the landscape's material.
-		landscapeMaterialTexture = new Texture2D (landscapeWidthSegments, landscapeLengthSegments, TextureFormat.RGB24, true);
-		landscapeMaterialTexture.name = "LandscapeMaterialTexture";
-		landscapeMaterialTexture.wrapMode = TextureWrapMode.Clamp;
-		float landscapeMinHeight = minimumLandscapeHeight ();
-		float landscapeMaxHeight = maximumLandscapeHeight ();
+	private void UpdateLandscapeTexture(){
+		landscapeMaterialTexture = GetComponent<MeshRenderer> ().sharedMaterial.mainTexture as Texture2D;
+		float landscapeMinHeight = GetMinimumLandscapeHeight ();
+		float landscapeMaxHeight = GetMaximumLandscapeHeight ();
 		for(int i = 0; i < landscapeWidthSegments; i++){
 			for(int j = 0; j < landscapeLengthSegments; j++){
 				//cycle through all of the landscape's vertices
@@ -237,6 +248,41 @@ public class ProceduralLandscapeController : MonoBehaviour {
 			}
 		}
 		landscapeMaterialTexture.Apply ();
+	}
+
+	private void CreateLandscapeTexture(){
+		//creates the texture that will then be applied to the landscape's material.
+		landscapeMaterialTexture = new Texture2D (landscapeWidthSegments, landscapeLengthSegments, TextureFormat.RGB24, true);
+		landscapeMaterialTexture.name = "LandscapeMaterialTexture";
+		landscapeMaterialTexture.wrapMode = TextureWrapMode.Clamp;
+		float landscapeMinHeight = GetMinimumLandscapeHeight ();
+		float landscapeMaxHeight = GetMaximumLandscapeHeight ();
+		for(int i = 0; i < landscapeWidthSegments; i++){
+			for(int j = 0; j < landscapeLengthSegments; j++){
+				//cycle through all of the landscape's vertices
+				Vector3 p = LandscapePoint (i, j);	// get the landscape point
+				//calculate the landscape point's relative height: where it lies between the current minimum ang maximum height of the landscape
+				float landscapeRelativeHeight = map (p.y, landscapeMinHeight, landscapeMaxHeight, 0.0f, 1.0f);	// will receive a value 0.0f to 1.0f (relative to minimum to maximum)
+				//use the 
+				float cr = map (landscapeRelativeHeight, 0.0f, 1.0f, bottomColor.r, peakColor.r);	// set the color's red value accordingly
+				float cg = map (landscapeRelativeHeight, 0.0f, 1.0f, bottomColor.g, peakColor.g);	// set the color's green value accordingly
+				float cb = map (landscapeRelativeHeight, 0.0f, 1.0f, bottomColor.b, peakColor.b);	// set the color's blue value accordingly
+				Color cc = new Color(cr,cg,cb,1.0f);
+				landscapeMaterialTexture.SetPixel (i, j, cc);
+			}
+		}
+		landscapeMaterialTexture.Apply ();
+	}
+
+	private void UpdateLandscapeMaterial(){
+		landScapeMaterial = GetComponent<MeshRenderer> ().sharedMaterial;
+		landScapeMaterial.mainTexture = landscapeMaterialTexture;
+		Vector2 matScale = new Vector2 (1.0f/landscapeWidth,1.0f/landscapeLength);
+		landScapeMaterial.mainTextureScale = matScale;
+		Vector2 matOffset = new Vector2 (0.5f, 0.5f);
+		landScapeMaterial.mainTextureOffset = matOffset;
+		landScapeMaterial.SetFloat ("_Metallic", materialMetallicness);
+		landScapeMaterial.SetFloat ("_Glossiness", materialSmoothness);
 	}
 
 	private void CreateLandscapeMaterial(){
@@ -283,7 +329,7 @@ public class ProceduralLandscapeController : MonoBehaviour {
 		return toMin + (fromValue - fromMin) * (toMax - toMin) / (fromMax - fromMin);
 	}
 
-	float minimumLandscapeHeight(){
+	float GetMinimumLandscapeHeight(){
 		float h = verticeList [0].y;
 		for (int i = 0; i < verticeList.Count; i++) {
 			if (verticeList [i].y < h)
@@ -292,7 +338,7 @@ public class ProceduralLandscapeController : MonoBehaviour {
 		return h;
 	}
 
-	float maximumLandscapeHeight(){
+	float GetMaximumLandscapeHeight(){
 		float h = verticeList [0].y;
 		for (int i = 0; i < verticeList.Count; i++) {
 			if (verticeList [i].y > h)
