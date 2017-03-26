@@ -16,4 +16,8 @@ more info about this example: http://www.konsfik.com/procedural-water-surface-ma
 project - specific - folder: https://github.com/konsfik/Unity3D-Coding-Examples/tree/master/2-Procedural-Landscape  
 ### Description:  
 This project is a case-study on **"how you can procedurally generate a landscape - surface in Unity, using c# code"**. It allows you to make changes and see a preview of the generated mesh in Unity editor's edit-mode.  
-The aim is to also be able to save the generated mesh as a prefab, but I have not implemented this functionality yet. More details coming soon.
+The aim is to also be able to save the generated mesh as a prefab, but I have not implemented this functionality yet. More details coming soon.  
+### Screenshots:  
+<img src="/screenshots/2-Procedural-Landscape-Screenshots/konsfik-procedural-landscape-editor-screenshot-1.jpg" width="300" title="editor screenshot" />  
+<img src="/screenshots/2-Procedural-Landscape-Screenshots/konsfik-procedural-landscape-editor-screenshot-controls.jpg" width="300" title="editor controls" />  
+<img src="/screenshots/2-Procedural-Landscape-Screenshots/konsfik-procedural-landscape-animated-play-mode-screenshot-1.jpg" width="300" title="animated play mode screenshot" />
