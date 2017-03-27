@@ -19,6 +19,7 @@ This project is a case study on **"how you can procedurally generate Waves on a 
     <td>Procedural Water Surface - application screenshot</td> 
   </tr>
 </table>  
+
 ### 1.3. Further links:  
 demo-video: https://www.youtube.com/watch?v=xy8MhL6WoSw  
 more info about this example: http://www.konsfik.com/procedural-water-surface-made-in-unity3d/  
