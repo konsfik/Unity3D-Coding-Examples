@@ -29,6 +29,7 @@ project - specific - folder: https://github.com/konsfik/Unity3D-Coding-Examples/
 ### 2.1. Description:  
 This project is a case-study on **"how you can procedurally generate a landscape - surface in Unity, using c# code"**. It allows you to make changes and see a preview of the generated mesh in Unity editor's edit-mode.  
 The aim is to also be able to save the generated mesh as a prefab, but I have not implemented this functionality yet. More details coming soon.  
+
 ### 2.2. Screenshots:  
 <table style="width:100%;">
   <tr>
@@ -48,7 +49,30 @@ The aim is to also be able to save the generated mesh as a prefab, but I have no
     <td>Procedural Landscape - animated mode</td> 
   </tr>
 </table>
+
+### 2.3. Future plans:
+This project is currently functional, however it will need some expansion (in its functionality) inorder to become an actual level-design tool.  
+
+**Here is a list of the functionality that has already been implemented:**  
+- [x] Apply Perlin Noise on a custom grid - mesh, creating an artificial - landscape - geometry.  
+- [x] Use the data (height - variation) of the created landscape to make a custom gradient material.  
+- [x] Expose variables to inspector and make sure that it the geometry and material update correctly while in edit mode.  
+- [x] Create a demo-mode, in which the Landscape updates by itself, in an ever-changing manner (just for the fun of it).  
+
+**And here is the current 'TO - DO - LIST':**  
+- [ ] The algorithm adds a collider on the procedural mesh, so that you can use it as a playeble level.  
+- [ ] The algorithm allows you to save the mesh as a prefab, so that you cn create a collection of pre-made Landscapes.  
+- [ ] The algorithm allows you to export the mesh in a 3D-file format (such as .obj or .dxf) so that you can edit it with another application.  
+- [ ] The Procedural Mesh's geometry expands in real time - as you explore it, creating a never-ending world.  
+- [ ] The Landscape is populated with extra elements (such as rocks and vegetation) thaus creating a richer environment.  
+
+I am not sure if / when I will fulfill the list's tasks. For the time being I am more interested in populating this repository with a variety of examples. However, I am writing these down for future reference.
  
-### 2.3. Further links:  
+### 2.4. Further links:  
 demo-video: https://www.youtube.com/watch?v=mXWjAjq2yYQ  
 more info about this example: http://www.konsfik.com/procedural-landscape-made-in-unity3d/  
+
+## 3. Procedural Sounds  
+COMING SOON!
+### 3.1 Description:
+This project is a case-study on **"how you can procedurally generate some simple sounds from within the Unity engine, and connect those sounds with things that happen in your scene"**. 
