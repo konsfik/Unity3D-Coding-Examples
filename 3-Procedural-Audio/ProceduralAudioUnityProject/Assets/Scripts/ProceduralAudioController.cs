@@ -20,6 +20,7 @@ public class ProceduralAudioController : MonoBehaviour {
 	//SinusWave amOsc;
 	float tt;
 	float ttPrev;
+	public bool autoPlay;
 
 	[Header("Volume / Frequency")]
 	[Range(0.0f,1.0f)]
@@ -81,6 +82,18 @@ public class ProceduralAudioController : MonoBehaviour {
 		sampleRate = AudioSettings.outputSampleRate;
 		myDspTime = AudioSettings.dspTime;
 		currentTime = 0;
+	}
+
+	void Update(){
+		if (autoPlay) {
+			mainFrequency = Mathf.PingPong (Time.time*200.0f, 1900.0f) + 100.0f;
+			sinusAudioWaveIntensity = Mathf.PingPong (Time.time * 0.5f, 1.0f);
+			squareAudioWaveIntensity = Mathf.PingPong (Time.time * 0.6f, 1.0f);
+			sawAudioWaveIntensity = Mathf.PingPong (Time.time * 0.7f, 1.0f);
+			amplitudeModulationOscillatorFrequency = Mathf.PingPong (Time.time * 3.0f, 30.0f);
+			frequencyModulationOscillatorFrequency = Mathf.PingPong (Time.time * 4.0f, 30.0f);
+			frequencyModulationOscillatorIntensity = Mathf.PingPong (Time.time * 10.0f, 100.0f);
+		}
 	}
 
 	void OnAudioFilterRead(float[] data, int channels){
