@@ -85,6 +85,6 @@ demo-video: https://www.youtube.com/watch?v=mXWjAjq2yYQ
 more info about this example: http://www.konsfik.com/procedural-landscape-made-in-unity3d/  
 
 ## 3. Procedural Sounds  
-COMING SOON!
+Project - specific - folder: https://github.com/konsfik/Unity3D-Coding-Examples/tree/master/3-Procedural-Audio  
 ### 3.1 Description:
-This project is a case-study on **"how you can procedurally generate some simple sounds from within the Unity engine, and connect those sounds with things that happen in your scene"**. 
+This project is a case-study on **"how you can procedurally generate some simple sounds from within the Unity engine, and connect those sounds with parameters of other objects in your scene"**. The advantage of that is that you have access to parameters that **drive** the audio generation, and not only to the resulting audio. The "disadvantage" is that you must have a good understanding of digital audio inorder to create your own tools / alterations upon this example.  
