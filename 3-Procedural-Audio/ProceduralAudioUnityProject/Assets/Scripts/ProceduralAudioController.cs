@@ -1,9 +1,16 @@
-﻿using System.Collections;
+﻿/*	Author: Kostas Sfikas
+	Date: April 2017
+	Language: c#
+	Platform: Unity 5.5.0 f3 (personal edition) */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 public class ProceduralAudioController : MonoBehaviour {
+	/* This class is the main audio engine, that has certain embedded functions to it, so that
+	you may produce some interesting audio results.*/
 	SawWave sawAudioWave;
 	SquareWave squareAudioWave;
 	SinusWave sinusAudioWave;
@@ -33,8 +40,6 @@ public class ProceduralAudioController : MonoBehaviour {
 	public bool useSawAudioWave;
 	[Range(0.0f,1.0f)]
 	public float sawAudioWaveIntensity = 0.25f;
-
-
 
 	[Space(10)]
 
@@ -70,11 +75,9 @@ public class ProceduralAudioController : MonoBehaviour {
 		squareAudioWave = new SquareWave ();
 		sinusAudioWave = new SinusWave ();
 
-
 		amplitudeModulationOscillator = new SinusWave ();
 		frequencyModulationOscillator = new SinusWave ();
-		//gain = 1.0f;
-		//mainFrequency = 440.0f;
+
 		sampleRate = AudioSettings.outputSampleRate;
 		myDspTime = AudioSettings.dspTime;
 		currentTime = 0;
@@ -106,7 +109,6 @@ public class ProceduralAudioController : MonoBehaviour {
 			if (useSquareAudioWave) {
 				signalValue += squareAudioWaveIntensity * squareAudioWave.calculateSignalValue (tt, currentFreq);
 			}
-			//s1 = sq1.calculateSignalValue(tt, mainFrequency); // sinusoidSignal1.calculateSignalValue (tt, mainFrequency*1);
 
 			if (useAmplitudeModulation) {
 				signalValue *= mapValueD (amplitudeModulationOscillator.calculateSignalValue (tt, amplitudeModulationOscillatorFrequency), -1.0, 1.0, 0.0, 1.0);
@@ -116,9 +118,6 @@ public class ProceduralAudioController : MonoBehaviour {
 			}
 
 			float x = masterVolume * 0.5f * (float)signalValue;
-
-
-
 
 			for (int j = 0; j < channels; j++) {
 				data[i * channels + j] = x;

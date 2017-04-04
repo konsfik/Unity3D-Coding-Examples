@@ -1,10 +1,20 @@
-﻿using System.Collections;
+﻿/*	Author: Kostas Sfikas
+	Date: April 2017
+	Language: c#
+	Platform: Unity 5.5.0 f3 (personal edition) */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 public class SawWave{
-	double[] squareHarmonicLevels = new double[] 
+	/* This class creates an approximation of a Saw Wave, by using harmonics of a sinus wave.
+	This way the actual shape of the wave is smoother than an absolute saw shape, thus reducing
+	some of the noise this would create.
+	The levels of each harmonic are stored in the sawHarmonicLevels Array */
+
+	double[] sawHarmonicLevels = new double[] 
 	{
 		1.0, 		// level of 1st harmonic
 		0.5,		// level of 2nd harmonic
@@ -24,7 +34,7 @@ public class SawWave{
 		0.0625			// level of 16th harmonic
 	};
 
-	SinusWave[] subSignals;
+	SinusWave[] subSignals;	
 
 	public SawWave(){
 		subSignals = new SinusWave[16];
@@ -36,7 +46,7 @@ public class SawWave{
 	public double calculateSignalValue(double newSignalTime, double newSignalFrequency){
 		double signalSum = 0.0;
 		for (int i = 0; i < subSignals.Length; i++) {
-			signalSum += squareHarmonicLevels[i] * subSignals [i].calculateSignalValue (newSignalTime, newSignalFrequency * (i+1));
+			signalSum += sawHarmonicLevels[i] * subSignals [i].calculateSignalValue (newSignalTime, newSignalFrequency * (i+1));
 		}
 		return signalSum;
 	}

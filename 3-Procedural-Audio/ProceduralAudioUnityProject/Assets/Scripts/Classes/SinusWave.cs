@@ -1,9 +1,15 @@
-﻿using System.Collections;
+﻿/*	Author: Kostas Sfikas
+	Date: April 2017
+	Language: c#
+	Platform: Unity 5.5.0 f3 (personal edition) */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 public class SinusWave{
+	
 	double currentSignalTime;			// the current dsp time
 	double currentSignalFrequency;		// the current frequency of the signal
 	double currentSignalPhaseOffset;	// the current phase offset of the signal
@@ -24,17 +30,6 @@ public class SinusWave{
 			 LOTS of CLICKS when the frequency changes.
 
 			Description: When the frequency changes, it is driven either by a slider, or by an
- 			 __   
-			/  \__						one cycle
-			 __    __   
-			/  \__/  \__				two cycles
-			 __    __    __    
-			/  \__/  \__/  \__			three cycles
-			 __    __    __    __
-			/  \__/  \__/  \__/  \__	four cycles
-
-			... and so on...
-
 			external signal. Either way, the change happens in (very small) increments. When such
 			a change takes place, then the produced wave suddenly changes phase.
 			To make this more clear, suppose that there is a change from 
@@ -45,8 +40,8 @@ public class SinusWave{
 			Every time the frequency changes, the phase of the wave is shifted in such a way that the current value of the sinusoidal 
 			function remains the same between the two steps. This way, no matter how quickly the frequency changes, no clicks are ever 
 			heard (because of that, at least). 
-			This is kind of complicated, and very low-level audio stuff, so if you do not understand it, you may just use it.
-			*/
+			This is kind of complicated, and very low-level audio stuff, so if you do not understand it, you may just use it. */
+
 			// calculate the signal's current period: period = 1 / frequency
 			double currentSignalPeriod = 1.0 / currentSignalFrequency;
 			// calculate the current number of cycles:

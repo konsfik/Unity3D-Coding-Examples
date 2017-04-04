@@ -1,4 +1,9 @@
-﻿using System.Collections;
+﻿/*	Author: Kostas Sfikas
+	Date: April 2017
+	Language: c#
+	Platform: Unity 5.5.0 f3 (personal edition) */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
