@@ -11,15 +11,14 @@ using System;
 public class ProceduralAudioController : MonoBehaviour {
 	/* This class is the main audio engine, that has certain embedded functions to it, so that
 	you may produce some interesting audio results.*/
+
 	SawWave sawAudioWave;
 	SquareWave squareAudioWave;
 	SinusWave sinusAudioWave;
 
 	SinusWave amplitudeModulationOscillator;
 	SinusWave frequencyModulationOscillator;
-	//SinusWave amOsc;
-	float tt;
-	float ttPrev;
+
 	public bool autoPlay;
 
 	[Header("Volume / Frequency")]
@@ -66,11 +65,12 @@ public class ProceduralAudioController : MonoBehaviour {
 	private System.Random RandomNumber = new System.Random();
 
 	private double sampleRate;	// samples per second
-	private double myDspTime;	// dsp time
-	private double dataLen;		//the data length of each channel
-	double chunkTime;
-	double stepTime;
-	double currentTime;
+	//private double myDspTime;	// dsp time
+	private double dataLen;		// the data length of each channel
+	double chunkTime;			
+	double dspTimeStep;
+	double currentDspTime;
+
 	void Awake(){
 		sawAudioWave = new SawWave ();
 		squareAudioWave = new SquareWave ();
@@ -80,13 +80,11 @@ public class ProceduralAudioController : MonoBehaviour {
 		frequencyModulationOscillator = new SinusWave ();
 
 		sampleRate = AudioSettings.outputSampleRate;
-		myDspTime = AudioSettings.dspTime;
-		currentTime = 0;
 	}
 
 	void Update(){
 		if (autoPlay) {
-			mainFrequency = Mathf.PingPong (Time.time*200.0f, 1900.0f) + 100.0f;
+			mainFrequency = Mathf.PingPong (Time.time *200.0f, 1900.0f) + 100.0f;
 			sinusAudioWaveIntensity = Mathf.PingPong (Time.time * 0.5f, 1.0f);
 			squareAudioWaveIntensity = Mathf.PingPong (Time.time * 0.6f, 1.0f);
 			sawAudioWaveIntensity = Mathf.PingPong (Time.time * 0.7f, 1.0f);
@@ -97,35 +95,48 @@ public class ProceduralAudioController : MonoBehaviour {
 	}
 
 	void OnAudioFilterRead(float[] data, int channels){
-		currentTime = AudioSettings.dspTime;
+		/* This is called by the system
+		suppose: sampleRate = 48000
+		suppose: data.Length = 2048
+		suppose: channels = 2
+		then:
+		dataLen = 2048/2 = 1024
+		chunkTime = 1024 / 48000 = 0.0213333... so the chunk time is around 21.3 milliseconds.
+		dspTimeStep = 0.0213333 / 1024 = 2.083333.. * 10^(-5) = 0.00002083333..sec = 0.02083 milliseconds
+			keep note that 1 / dspTimeStep = 48000 ok!		
+		*/
+
+		currentDspTime = AudioSettings.dspTime;
 		dataLen = data.Length / channels;	// the actual data length for each channel
 		chunkTime = dataLen / sampleRate;	// the time that each chunk of data lasts
-		stepTime = chunkTime / dataLen;
+		dspTimeStep = chunkTime / dataLen;	// the time of each dsp step. (the time that each individual audio sample (actually a float value) lasts)
+
+		double preciseDspTime;
 		for (int i = 0; i < dataLen; i++)	{ // go through data chunk
-			double tt = currentTime +  i * stepTime;
+			preciseDspTime = currentDspTime +  i * dspTimeStep;
 			double signalValue = 0.0;
 			double currentFreq = mainFrequency;
 			if (useFrequencyModulation) {
 				double freqOffset = (frequencyModulationOscillatorIntensity * mainFrequency * 0.75) / 100.0;
-				currentFreq += mapValueD (frequencyModulationOscillator.calculateSignalValue (tt, frequencyModulationOscillatorFrequency), -1.0, 1.0, -freqOffset, freqOffset);
-				frequencyModulationRangeOut = (float)frequencyModulationOscillator.calculateSignalValue (tt, frequencyModulationOscillatorFrequency) * 0.5f + 0.5f;
+				currentFreq += mapValueD (frequencyModulationOscillator.calculateSignalValue (preciseDspTime, frequencyModulationOscillatorFrequency), -1.0, 1.0, -freqOffset, freqOffset);
+				frequencyModulationRangeOut = (float)frequencyModulationOscillator.calculateSignalValue (preciseDspTime, frequencyModulationOscillatorFrequency) * 0.5f + 0.5f;
 			} else {
 				frequencyModulationRangeOut = 0.0f;
 			}
 
 			if (useSinusAudioWave) {
-				signalValue += sinusAudioWaveIntensity * sinusAudioWave.calculateSignalValue (tt, currentFreq);
+				signalValue += sinusAudioWaveIntensity * sinusAudioWave.calculateSignalValue (preciseDspTime, currentFreq);
 			}
 			if (useSawAudioWave) {
-				signalValue += sawAudioWaveIntensity * sawAudioWave.calculateSignalValue (tt, currentFreq);
+				signalValue += sawAudioWaveIntensity * sawAudioWave.calculateSignalValue (preciseDspTime, currentFreq);
 			}
 			if (useSquareAudioWave) {
-				signalValue += squareAudioWaveIntensity * squareAudioWave.calculateSignalValue (tt, currentFreq);
+				signalValue += squareAudioWaveIntensity * squareAudioWave.calculateSignalValue (preciseDspTime, currentFreq);
 			}
 
 			if (useAmplitudeModulation) {
-				signalValue *= mapValueD (amplitudeModulationOscillator.calculateSignalValue (tt, amplitudeModulationOscillatorFrequency), -1.0, 1.0, 0.0, 1.0);
-				amplitudeModulationRangeOut = (float)amplitudeModulationOscillator.calculateSignalValue (tt, amplitudeModulationOscillatorFrequency) * 0.5f + 0.5f;
+				signalValue *= mapValueD (amplitudeModulationOscillator.calculateSignalValue (preciseDspTime, amplitudeModulationOscillatorFrequency), -1.0, 1.0, 0.0, 1.0);
+				amplitudeModulationRangeOut = (float)amplitudeModulationOscillator.calculateSignalValue (preciseDspTime, amplitudeModulationOscillatorFrequency) * 0.5f + 0.5f;
 			} else {
 				amplitudeModulationRangeOut = 0.0f;
 			}

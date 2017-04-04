@@ -25,6 +25,7 @@ public class SpectrumVisualizerController : MonoBehaviour {
 			GameObject instance = Instantiate (spectrumCubePrefab, cubePos, Quaternion.identity);
 			Quaternion rot = Quaternion.Euler(0.0f, i * 2.0f, 0.0f);
 			instance.transform.rotation = rot;
+			instance.transform.parent = this.transform;
 			cubes.Add (instance);
 		}
 	}
