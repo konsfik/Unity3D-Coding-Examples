@@ -8,9 +8,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[RequireComponent(typeof (AudioSource))]
 public class ProceduralAudioController : MonoBehaviour {
-	/* This class is the main audio engine, that has certain embedded functions to it, so that
-	you may produce some interesting audio results.*/
+	/* This class is the main audio engine, 
+	- It uses the OnAudioFilterRead() function to create sound by applying mathematical functions
+	on each separate audio sample.
+	- It uses the SawWave, SinusWave and SquareWave classes to produce the audio waves, 
+	as well as the Frequency and Amplitude Modulations. 
+	- This class (as well as the related classes) has not been optimized for performance. Therefore 
+	it is not recommended to use multiple instance of this class, because you may have performance issues.*/
 
 	SawWave sawAudioWave;
 	SquareWave squareAudioWave;
@@ -151,12 +157,12 @@ public class ProceduralAudioController : MonoBehaviour {
 	}
 
 	float mapValue(float referenceValue, float fromMin, float fromMax, float toMin, float toMax) {
-		/* This function maps (converts) a value from one range to another */
+		/* This function maps (converts) a Float value from one range to another */
 		return toMin + (referenceValue - fromMin) * (toMax - toMin) / (fromMax - fromMin);
 	}
 
 	double mapValueD(double referenceValue, double fromMin, double fromMax, double toMin, double toMax) {
-		/* This function maps (converts) a value from one range to another */
+		/* This function maps (converts) a Double value from one range to another */
 		return toMin + (referenceValue - fromMin) * (toMax - toMin) / (fromMax - fromMin);
 	}
 }
