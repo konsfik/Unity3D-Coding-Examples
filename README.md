@@ -1,18 +1,18 @@
 # Unity3D-Coding-Examples
 This repository includes sample projects made with Unity, with the purpose of creating a collection of reusable, manageable pieces of code that can be used as toolsets on larger-scale applications.  
 ## Table of Contents:
-1. Procedural Water Surface  
-1.1. Description  
-1.2. Screenshots  
-1.3. Further Links  
-2. Procedural Landscape  
-2.1. Description  
-2.2. Screenshots  
-2.3. Future Plans  
-2.4. Further Links  
-3. Procedural Audio  
-3.1. Description  
-3.2. Screenshots  
+1. [Procedural Water Surface](#1-procedural-water-surface)  
+1.1. [Description](#11-description)   
+1.2. [Screenshots](#12-screenshots)   
+1.3. [Further Links](#13-further-links)  
+2. [Procedural Landscape](#2-procedural-landscape)  
+2.1. [Description](#21-description)  
+2.2. [Screenshots](#22-screenshots)  
+2.3. [Future Plans](#23-future-plans)  
+2.4. [Further Links](#24-further-links)  
+3. [Procedural Audio](#3-procedural-audio)  
+3.1. [Description](#31-description)  
+3.2. [Screenshots](#32-screenshots)  
 
 ## 1. Procedural Water Surface
 project - specific - folder: https://github.com/konsfik/Unity3D-Coding-Examples/tree/master/1-Procedural-Water-Surface  
