@@ -2,15 +2,17 @@
 This repository includes sample projects made with Unity, with the purpose of creating a collection of reusable, manageable pieces of code that can be used as toolsets on larger-scale applications.  
 ## Table of Contents:
 1. Procedural Water Surface  
-1.1. Description:  
-1.2. Screenshots:  
-1.3. Further Links:  
+1.1. Description  
+1.2. Screenshots  
+1.3. Further Links  
 2. Procedural Landscape  
-2.1. Description:  
-2.2. Screenshots:  
-2.3. Future Plans:  
-2.4. Further Links:  
-3. Procedural Sounds
+2.1. Description  
+2.2. Screenshots  
+2.3. Future Plans  
+2.4. Further Links  
+3. Procedural Audio  
+3.1. Description  
+3.2. Screenshots  
 
 ## 1. Procedural Water Surface
 project - specific - folder: https://github.com/konsfik/Unity3D-Coding-Examples/tree/master/1-Procedural-Water-Surface  
@@ -84,7 +86,27 @@ I am not sure if / when I will fulfill the list's tasks. For the time being I am
 demo-video: https://www.youtube.com/watch?v=mXWjAjq2yYQ  
 more info about this example: http://www.konsfik.com/procedural-landscape-made-in-unity3d/  
 
-## 3. Procedural Sounds  
+## 3. Procedural Audio  
 Project - specific - folder: https://github.com/konsfik/Unity3D-Coding-Examples/tree/master/3-Procedural-Audio  
 ### 3.1 Description:
 This project is a case-study on **"how you can procedurally generate some simple sounds from within the Unity engine, and connect those sounds with parameters of other objects in your scene"**. The advantage of that is that you have access to parameters that **drive** the audio generation, and not only to the resulting audio. The "disadvantage" is that you must have a good understanding of digital audio inorder to create your own tools / alterations upon this example.  
+### 3.2. Screenshots:  
+<table style="width:100%;">
+  <tr>
+    <th>Images</th>
+    <th>Descriptions</th>
+  </tr>
+  <tr>
+    <td><img src="/screenshots/3-Procedural-Audio-Screenshots/konsfik-procedural-audio-made-in-unity3d-editor-screenshot-1.jpg" width="400" title="editor screenshot" /> </td>
+    <td>Procedural Audio - editor screenshot</td> 
+  </tr>
+  <tr>
+    <td><img src="/screenshots/3-Procedural-Audio-Screenshots/konsfik-procedural-audio-made-in-unity3d-editor-controls-screenshot-1.jpg" width="400" title="editor controls" />  </td>
+    <td>Procedural Audio - editor controls</td> 
+  </tr>
+  <tr>
+    <td><img src="/screenshots/3-Procedural-Audio-Screenshots/konsfik-procedural-audio-made-in-unity3d-autoplay-mode-screenshot-1.jpg" width="400" title="autoPlay mode screenshot" /></td>
+    <td>Procedural Audio - autoPlay mode</td> 
+  </tr>
+</table>
+
