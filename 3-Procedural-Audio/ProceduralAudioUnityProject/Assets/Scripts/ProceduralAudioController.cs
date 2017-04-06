@@ -90,6 +90,21 @@ public class ProceduralAudioController : MonoBehaviour {
 
 	void Update(){
 		if (autoPlay) {
+			if(!useSinusAudioWave){
+				useSinusAudioWave = true;
+			}
+			if(!useSquareAudioWave){
+				useSquareAudioWave = true;
+			}
+			if(!useSawAudioWave){
+				useSawAudioWave = true;
+			}
+			if(!useAmplitudeModulation){
+				useAmplitudeModulation = true;
+			}
+			if(!useFrequencyModulation){
+				useFrequencyModulation = true;
+			}
 			mainFrequency = Mathf.PingPong (Time.time *200.0f, 1900.0f) + 100.0f;
 			sinusAudioWaveIntensity = Mathf.PingPong (Time.time * 0.5f, 1.0f);
 			squareAudioWaveIntensity = Mathf.PingPong (Time.time * 0.6f, 1.0f);
