@@ -13,6 +13,7 @@ This repository includes sample projects made with Unity, with the purpose of cr
 3. [Procedural Audio](#3-procedural-audio)  
 3.1. [Description](#31-description)  
 3.2. [Screenshots](#32-screenshots)  
+3.3. [Further Links](#33-further-links)  
 
 ## 1. Procedural Water Surface
 project - specific - folder: https://github.com/konsfik/Unity3D-Coding-Examples/tree/master/1-Procedural-Water-Surface  
@@ -110,3 +111,6 @@ This project is a case-study on **"how you can procedurally generate some simple
   </tr>
 </table>
 
+# 3.3. Further links:  
+demo-video: https://youtu.be/fg0zjFfQJDU  
+more info about this example: http://www.konsfik.com/procedural-audio-made-in-unity3d/  
