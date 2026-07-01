@@ -393,7 +393,7 @@ public class Procedural_Landscape_Controller : MonoBehaviour {
 			peakColorPreviousValue = peakColor;
 			bottomColorPreviousValue = bottomColor;
 			//send message to log
-			Debug.Log ("value change");
+			//Debug.Log ("value change");
 			// and return true
 			return true;	
 		}
